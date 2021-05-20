@@ -1,0 +1,69 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% load static %}
+
+    <h1>From people you follow</h1>
+
+    <div id="all_posts">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post_form" id="{{post.id}}_form">
+                    {% if post.user.first_name != '' or post.user.last_name != ''%}
+                    <div class="post_username">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {{post.user.first_name.capitalize}} {{post.user.last_name.capitalize}}
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="post_username">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {{post.user.username.capitalize}}
+                        </a>
+                    </div>
+                {% endif %}
+                    <div class="post_details" style="font-size: 18px;">{{post.content}}</div>
+                    <div class="post_time_comment">{{post.serialize.time}}</div>
+                    <div class="post_details">
+                        {% if user.is_authenticated %}
+                            {% if user in post.user_like.all %}
+                                <img id="{{post.id}}_image" class="like_icon" width="15px" height="15px" src='{% static "network/heart.jpg" %}'/>
+                            {% else %}
+                                <img id="{{post.id}}_image"class="like_icon" width="15px" height="15px" src='{% static "network/empty_heart.jpg" %}'/>
+                            {% endif %}
+                        {% else %}
+                            <img id="{{post.id}}_image" class="like_icon" width="15px" height="15px" src='{% static "network/empty_heart.jpg" %}'/>
+                        {% endif %}
+                        <span id="{{post.id}}_like_count" class="post_like">Liked by: <strong>{{post.like}}</strong></span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+                <div class="post_form">
+                    <h5><strong>Follow your favorite people to hear about their latest updates here.</strong></h5>
+                </div>
+        {% endif %}
+    </div>
+    <div class="please_wait">
+        Please wait...
+    </div>
+
+
+    <!--follow modal-->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal_message" id="users_modal_message">
+                <!--API call gets all message here-->
+                </div>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="users_modal_content">
+                <!--API call gets all users here-->
+
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}

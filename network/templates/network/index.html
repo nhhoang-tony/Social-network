@@ -1,0 +1,78 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% load static %}
+
+{{ request.user.id|json_script:"user_id" }}
+    <h1>All posts</h1>
+
+
+    {% if user.is_authenticated %}
+    <div class="add_new_post" id="original_post_form">
+        <h5>New Post</h5>
+        <form id="new_post">
+            {% csrf_token %}
+            <textarea class="form-control" id="post_content" placeholder="Type your latest hits here" required=""></textarea>
+            <input type="submit" class="submit_button" style="margin-top: 10px" value="Post"/>
+        </form>
+    </div>
+    {% endif %}
+
+    <div id="all_posts">
+        {% for post in posts %}
+            <div class="post_form" id="{{post.id}}_form">
+                {% if post.user.first_name != '' or post.user.last_name != ''%}
+                    <div class="post_username">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {{post.user.first_name.capitalize}} {{post.user.last_name.capitalize}}
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="post_username">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {{post.user.username.capitalize}}
+                        </a>
+                    </div>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.username == post.user.username %}
+                <div class="post_details"><span id="{{post.id}}_edit" class="edit">Edit</span><span id="{{post.id}}_delete" class="delete">Delete</span></div>
+                    {% endif %}
+                {% endif %}
+                <div id="{{post.id}}_content" class="post_details" style="font-size: 18px;">{{post.content}}</div>
+                <div class="post_time_comment">{{post.serialize.time}}</div>
+                <div class="post_details">
+                        {% if user.is_authenticated %}
+                            {% if user in post.user_like.all %}
+                                <img id="{{post.id}}_image" class="like_icon" width="15px" height="15px" src="{% static 'network/heart.jpg' %}"/>
+                            {% else %}
+                                <img id="{{post.id}}_image"class="like_icon" width="15px" height="15px" src='{% static "network/empty_heart.jpg" %}'/>
+                            {% endif %}
+                        {% else %}
+                            <img id="{{post.id}}_image" class="like_icon" width="15px" height="15px" src='{% static "network/empty_heart.jpg" %}'/>
+                        {% endif %}
+                    <span id="{{post.id}}_like_count" class="post_like">Liked by: <strong>{{post.like}}</strong></span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="please_wait">
+        Please wait...
+    </div>
+
+    <!--follow modal-->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal_message" id="users_modal_message">
+                <!--API call gets all message here-->
+                </div>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="users_modal_content">
+                <!--API call gets all users here-->
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,389 @@
+
+body {
+    background-color: rgb(245, 245, 252);
+}
+
+.navbar {
+    background-color: rgb(220, 220, 248) !important;
+}
+
+
+@keyframes add_post{
+    0% {
+        margin-bottom: 10px;
+
+    }
+    100% {
+        margin-bottom: 200px;
+    }
+}
+
+.add_new_post {
+    border-style: ridge;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    background-color: white;
+
+    animation-name: add_post;
+    animation-duration: 1s;
+    animation-fill-mode: initial;
+    animation-play-state: paused;
+}
+
+@keyframes delete_post {
+    0% {
+        opacity: 1;
+        height: 100%;
+        line-height: 25px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    50% {
+        opacity: 0;
+        height: 100%;
+        line-height: 25px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    100% {
+        opacity: 0;
+        height: 0%;
+        line-height: 0%;
+        padding: 0px;
+        margin-bottom: 0px;
+    }
+}
+
+.post_form {
+    border-style: ridge;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    background-color: white;
+
+    animation-name: delete_post;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+
+.post_username {
+    font-size: 20px;
+    margin-top: 1%;
+    margin-bottom: 0.5%;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.post_details {
+    margin-left: 20px;
+    margin-bottom: 0.2%;
+}
+
+.post_time_comment {
+    margin-left: 20px;
+    font-weight: lighter;
+    font-size: 15px;
+}
+
+.like_icon:hover {
+    cursor: pointer;
+}
+
+.post_like {
+    margin-left: 3px;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.post_like:hover {
+    cursor: pointer;
+}
+
+.post_hide {
+    display: none;
+}
+
+h5 {
+    padding-top: 10px;
+    padding-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+#new_post {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+#new_post_form {
+    padding-right: 20px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+.navbar-brand:hover {
+    color: #e97856;
+}
+
+.edit {
+    font-size: 14px;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.delete {
+    font-size: 14px;
+    font-style: italic;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+a:link {
+    color: black !important;
+    background-color: transparent;
+  }
+  
+  a:visited {
+    color: black;
+    background-color: transparent;
+  }
+  
+  a:hover {
+    background-color: transparent;
+    text-decoration: none;
+    color: #e97856 !important;
+  }
+  
+  a:active {
+    color: black;
+    background-color: transparent;
+  }
+
+  .search_form {
+    height: 30px; 
+    width: 500px; 
+    margin-top: 1%;
+  }
+
+  .search_button {
+    margin-left: 18%;
+    height: 35px; 
+    margin-top: 1%;
+    background-color: rgb(220, 220, 248);
+    border-color: rgb(220, 220, 248);
+    border-style: none;
+    ;
+  }
+
+  .search_button:hover {
+    color: #e97856;
+  }
+
+  .nav-item:hover {
+    color: white
+  }
+
+  #follow-message {
+      margin-left: 1%;
+  }
+
+  .message {
+    font-size: 18px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    position: relative;
+    background-color: rgb(245, 245, 252);
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+  
+  /* Add Animation */
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+  
+  /* The Close Button */
+  .close {
+    color: black;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #e97856;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+
+  .modal_message {
+      margin-left: 2%;
+      font-size: 30px;
+      font-weight: bold;
+  }
+  
+  .modal-header {
+    padding: 10px 16px;
+    background-color: rgb(220, 220, 248);
+    color:black;
+  }
+  
+  .modal-body {padding: 2px 16px;}
+
+  #follower_modal_content {
+      display: none;
+  }
+
+  #following_modal_content {
+      display: none;
+  }
+
+  #profile_username {
+      text-align: center;
+  }
+
+  #profile_info {
+      text-align: center;
+      margin-bottom: 1%;
+  }
+
+  /* The Close Button */
+  .config {
+    color: black;
+    text-align: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .config:hover,
+  .config:focus {
+    color: #e97856;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #profile_followers {
+      font-style: italic;
+      cursor: pointer;
+  }
+
+  #profile_following {
+      font-style: italic;
+      cursor: pointer;
+  } 
+
+  #profile_post_count {
+      font-style: italic;
+      cursor: pointer;
+  }
+  
+  html {    
+      scroll-behavior: smooth;
+  }
+
+  .submit_button {
+      background-color: black;
+      border-color:black;
+      color: white;
+      border-radius: 5px;
+      width: 100px;
+      height: 40px;
+      outline: none;
+  }
+
+  .submit_button:hover {
+      background-color: white;
+      border-color: black;
+      color: black;
+  }
+
+  .submit_button:focus {
+    background-color: #e97856;
+    border-color: #e97856;
+    border: none;
+  }
+
+  .load_next_post_button {
+    background-color: black;
+    border-color:black;
+    color: white;
+    border-radius: 5px;
+    width: 100px;
+    height: 40px;
+    outline: none;
+
+    margin-bottom: 2%;
+    animation-name: infinite_post;
+    animation-duration: 1s;
+    animation-fill-mode: initial;
+    animation-play-state: paused;
+}
+
+.load_next_post_button:hover {
+    background-color: white;
+    border-color: black;
+    color: black;
+    outline: none;
+}
+
+.load_next_post_button:active {
+    outline: none;
+}
+
+@keyframes infinite_post{
+
+}
+
+.please_wait {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 1%;
+    display: none;
+}

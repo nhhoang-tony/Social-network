@@ -1,0 +1,136 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% load static %}
+
+    <div class="post_form">
+        <div class="post_details">
+            <h1 style='text-align: center;'>
+                <div id="profile_username" style="display: none">{{username}}</div>
+                {% if first_name != '' or last_name != ''%}
+                    <div id="profile_display_name">{{first_name.capitalize}} {{last_name.capitalize}}</div>
+                {% else %}
+                    <div id="profile_display_name">{{username.capitalize}}</div>
+                {% endif %}
+            </h1>
+            
+        </div>
+        <div id="profile_info">
+            <span id="profile_followers" class="post_details">{{followers}} followers</span>
+            <span id="profile_following" class="post_details">{{following}} following</span>
+            <span id="profile_post_count" class="post_details"><a href="#all_posts">{{post_count}} posts</a></span>
+        </div>
+
+        {% if user.is_authenticated %}
+            {% if user.username != username %}
+                {% if not is_following %}
+                    <button class="btn btn-sm btn-outline-primary post_details" id="follow">Follow</button>
+                    {% if first_name != '' or last_name != ''%}
+                        <span id="follow-message">You are not following {{first_name.capitalize}} {{last_name.capitalize}}</span>
+                    {% else %}
+                        <span id="follow-message">You are not following {{username.capitalize}}</span>
+                    {% endif %}
+                {% else %}
+                    <button class="btn btn-sm btn-outline-primary post_details" id="follow">Unfollow</button>
+                    {% if first_name != '' or last_name != ''%}
+                        <span id="follow-message">You are following {{first_name.capitalize}} {{last_name.capitalize}}</span>
+                    {% else %}
+                        <span id="follow-message">You are following {{username.capitalize}}</span>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+            <div class="config">
+                <a href="{% url 'config' username %}" >
+                    <i class="fa fa-cog contact-icon"></i>
+                </a>
+            </div>
+            {% endif %}
+        {% endif %}
+        
+    </div>
+
+    {% if user.is_authenticated %}
+        {% if user.username == username %}
+    <div class="add_new_post" id="original_post_form">
+        <h5>New Post</h5>
+        <form id="new_post">
+            {% csrf_token %}
+            <textarea class="form-control" id="post_content" placeholder="Type your latest hits here" required=""></textarea>
+            <input type="submit" class="submit_button" style="margin-top: 10px" value="Post" />
+        </form>
+    </div>
+        {% endif %}
+    {% endif %}
+
+    <div id="all_posts">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post_form" id="{{post.id}}_form">
+                    {% if post.user.first_name != '' or post.user.last_name != ''%}
+                    <div class="post_username">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {{post.user.first_name.capitalize}} {{post.user.last_name.capitalize}}
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="post_username">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {{post.user.username.capitalize}}
+                        </a>
+                    </div>
+                {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if user.username == post.user.username %}
+                        <div class="post_details"><span id="{{post.id}}_edit" class="edit">Edit</span><span id="{{post.id}}_delete" class="delete">Delete</span></div>
+                        {% endif %}
+                    {% endif %}
+                    <div id="{{post.id}}_content" class="post_details" style="font-size: 18px;">{{post.content}}</div>
+                    <div class="post_time_comment">{{post.serialize.time}}</div>
+                    <div class="post_details">
+                        {% if user.is_authenticated %}
+                            {% if user in post.user_like.all %}
+                                <img id="{{post.id}}_image" class="like_icon" width="15px" height="15px" src='{% static "network/heart.jpg" %}'/>
+                            {% else %}
+                                <img id="{{post.id}}_image"class="like_icon" width="15px" height="15px" src='{% static "network/empty_heart.jpg" %}'/>
+                            {% endif %}
+                        {% else %}
+                            <img id="{{post.id}}_image" class="like_icon" width="15px" height="15px" src='{% static "network/empty_heart.jpg" %}'/>
+                        {% endif %}
+                        <span id="{{post.id}}_like_count" class="post_like">Liked by: <strong>{{post.like}}</strong></span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% if user.username == username %}
+            <div class="post_form">
+                <h5><strong>You don't have any posts. Your followers are waiting</strong></h5>
+            </div>
+            {% else %}
+            <div class="post_form">
+                <h5><strong>{{username.capitalize}} is working on upcoming updates - stay in tunes</strong></h5>
+            </div>   
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="please_wait">
+        Please wait...
+    </div>
+
+    <!--follow modal-->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal_message" id="users_modal_message">
+                <!--API call gets all message here-->
+                </div>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="users_modal_content">
+                <!--API call gets all users here-->
+
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}

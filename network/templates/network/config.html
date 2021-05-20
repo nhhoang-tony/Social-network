@@ -1,0 +1,27 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% load static %}
+
+    <h2>{{welcome_message}}</h2>
+
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
+    <div class="post_form">
+        <form action="{% url 'config' username %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                First name<input class="form-control" autofocus type="text" name="first_name" placeholder="First Name" value="{{first_name.capitalize}}">
+            </div>
+            <div class="form-group">
+                Last name<input class="form-control" autofocus type="text" name="last_name" placeholder="Last Name" value="{{last_name.capitalize}}">
+            </div>
+            <div class="form-group">
+                Email<input class="form-control" type="email" name="email" placeholder="Email" value="{{email}}">
+            </div>
+            <input class="submit_button" type="submit" value="Save">
+        </form>
+    </div>
+{% endblock %}
