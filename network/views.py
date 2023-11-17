@@ -19,6 +19,7 @@ def index(request):
     posts = Post.objects.all().order_by("-time")[:5]
     return render(request, "network/index.html", {'posts': posts})
 
+
 def login_view(request):
     # only allow unauthenticated user to login
     if request.user.is_authenticated:
@@ -62,7 +63,7 @@ def register(request):
             return render(request, "network/register.html", {
                 "message": "Username must not contain space or special character '/'."
             })
-        if username == 'following' or username == 'home': 
+        if username == 'following' or username == 'home':
             return render(request, "network/register.html", {
                 "message": "Username can not be 'home' or 'following'"
             })
@@ -93,13 +94,13 @@ def register(request):
             })
         login(request, user)
         return render(request, "network/config.html", {
-                'welcome_message': 'Welcome ' + request.user.username + '. Edit your profile below',
-                'message': 'Your names will appear on your posts instead of username',
-                'username': request.user.username,
-                'first_name': request.user.first_name,
-                'last_name': request.user.last_name,
-                'email': request.user.email
-            })
+            'welcome_message': 'Welcome ' + request.user.username + '. Edit your profile below',
+            'message': 'Your names will appear on your posts instead of username',
+            'username': request.user.username,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email
+        })
     else:
         return render(request, "network/register.html")
 
@@ -134,14 +135,16 @@ def new_post_detail(request):
     # get detail on the newly created post
     new_post = Post.objects.filter(user=request.user).order_by("-time")[:1]
     if new_post:
-        latest_post = dict.fromkeys(['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like'])
+        latest_post = dict.fromkeys(
+            ['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like'])
 
         latest_post['user'] = new_post[0].user.username
         latest_post['first_name'] = new_post[0].user.first_name
         latest_post['last_name'] = new_post[0].user.last_name
         latest_post['id'] = new_post[0].id
         latest_post['content'] = new_post[0].content
-        latest_post['time'] = utc_to_local(new_post[0].time).strftime("%b %d %Y, %I:%M:%S %p")
+        latest_post['time'] = utc_to_local(
+            new_post[0].time).strftime("%b %d %Y, %I:%M:%S %p")
         latest_post['like'] = new_post[0].user_like.count()
         return JsonResponse({
             "post": latest_post,
@@ -151,7 +154,7 @@ def new_post_detail(request):
 
 # get user profile
 def profile(request, username):
-     # only allow GET
+    # only allow GET
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
@@ -165,18 +168,17 @@ def profile(request, username):
 
     posts = Post.objects.filter(user=current_profile).order_by("-time")[:5]
 
-
     return render(request, "network/profile.html", {
-                "username": username,
-                "first_name": current_profile.first_name,
-                "last_name": current_profile.last_name,
-                "followers": current_profile.following.all().count(),
-                "following": current_profile_follower.following.all().count(),    
-                "is_following": Follower.objects.get(user=request.user) in current_profile.following.all() if request.user.is_authenticated else False,
-                "post_count": posts.count(),
-                "posts": posts
-            })
-    
+        "username": username,
+        "first_name": current_profile.first_name,
+        "last_name": current_profile.last_name,
+        "followers": current_profile.following.all().count(),
+        "following": current_profile_follower.following.all().count(),
+        "is_following": Follower.objects.get(user=request.user) in current_profile.following.all() if request.user.is_authenticated else False,
+        "post_count": posts.count(),
+        "posts": posts
+    })
+
 
 # allow users to follow each other
 @csrf_protect
@@ -190,7 +192,7 @@ def follow(request):
     data = json.loads(request.body)
     if data.get("following") is not None:
         current_profile = User.objects.get(username=data["following"])
-    
+
     my_following_list = Follower.objects.get(user=request.user)
 
     # add or remove user from following list
@@ -214,13 +216,13 @@ def follow_status(request, following_profile):
     current_profile_follower = Follower.objects.get(user=current_profile)
 
     return JsonResponse({
-            "username": following_profile,
-            "first_name": current_profile.first_name,
-            "last_name": current_profile.last_name,
-            "followers": current_profile.following.all().count(),
-            "following": current_profile_follower.following.all().count(),
-            "is_following": Follower.objects.get(user=request.user) in current_profile.following.all()
-        }, status=200)
+        "username": following_profile,
+        "first_name": current_profile.first_name,
+        "last_name": current_profile.last_name,
+        "followers": current_profile.following.all().count(),
+        "following": current_profile_follower.following.all().count(),
+        "is_following": Follower.objects.get(user=request.user) in current_profile.following.all()
+    }, status=200)
 
 
 # allow users to get posts from following list
@@ -229,13 +231,14 @@ def following_post(request):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
-    # get all posts from following 
+    # get all posts from following
     following_list = Follower.objects.get(user=request.user)
-    posts = Post.objects.filter(user__in=following_list.following.all()).order_by("-time")[:5]
+    posts = Post.objects.filter(
+        user__in=following_list.following.all()).order_by("-time")[:5]
 
     return render(request, "network/following.html", {
-                "posts": posts
-            })
+        "posts": posts
+    })
 
 # allow users to like post
 @csrf_protect
@@ -247,7 +250,7 @@ def like_post(request):
 
     # get required field
     data = json.loads(request.body)
-    if data.get("post_id") is not None: # id of image is post.id_image
+    if data.get("post_id") is not None:  # id of image is post.id_image
         post_id = data.get("post_id").split("_")
         post = Post.objects.get(id=post_id[0])
 
@@ -265,18 +268,19 @@ def like_post(request):
     else:
         return JsonResponse({"message": "Post do not exist"}, status=404)
 
+
 @login_required
 def like_count(request, post_id):
     # only allow GET
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
-    postid = post_id.split("_") # id of image is post.id_image
+    postid = post_id.split("_")  # id of image is post.id_image
     post = Post.objects.get(id=postid[0])
 
     return JsonResponse({
-            "likes": post.like
-        }, status=200)
+        "likes": post.like
+    }, status=200)
 
 # allow users to change post
 @csrf_protect
@@ -290,8 +294,8 @@ def change_post(request):
     data = json.loads(request.body)
     if data.get("new_content") is not None:
         new_content = data["new_content"]
-    if data.get("post_id") is not None: 
-        postid = data["post_id"].split("_") # id of content is post.id_content
+    if data.get("post_id") is not None:
+        postid = data["post_id"].split("_")  # id of content is post.id_content
         post = Post.objects.filter(id=postid[0])
 
     # check for fake request
@@ -312,12 +316,12 @@ def change_post_view(request, post_id):
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
 
-    postid = post_id.split("_") # id of content is post.id_content
+    postid = post_id.split("_")  # id of content is post.id_content
     post = Post.objects.get(id=postid[0])
 
     return JsonResponse({
-            "content": post.content
-        }, status=200)
+        "content": post.content
+    }, status=200)
 
 # allow users to delete post
 @csrf_protect
@@ -328,11 +332,11 @@ def delete_post(request, post_id):
         return JsonResponse({"error": "DELETE request required."}, status=400)
 
     # get required field
-    postid = post_id.split("_") # id of content is post.id_content
+    postid = post_id.split("_")  # id of content is post.id_content
     post = Post.objects.filter(id=postid[0])
 
     # check for fake request
-    if post: 
+    if post:
         if request.user != post[0].user:
             return JsonResponse({"message": "Nice try"}, status=403)
 
@@ -347,9 +351,11 @@ def delete_post(request, post_id):
 def search(request, q=''):
     # get search value
     query = q
-    
-    no_space = User.objects.annotate(search_name=Concat('first_name', 'last_name'))
-    space = User.objects.annotate(search_name=Concat('first_name', Value(' '), 'last_name'))
+
+    no_space = User.objects.annotate(
+        search_name=Concat('first_name', 'last_name'))
+    space = User.objects.annotate(search_name=Concat(
+        'first_name', Value(' '), 'last_name'))
 
     # search for user based on username and combined first_name + last_name
     username = User.objects.filter(username__icontains=query).all()
@@ -369,7 +375,8 @@ def search(request, q=''):
             users.append(i)
 
     # get latest post from each user
-    users_posts = [dict.fromkeys(['username', 'first_name', 'last_name', 'latest_post', 'time']) for x in range(len(users))]
+    users_posts = [dict.fromkeys(
+        ['username', 'first_name', 'last_name', 'latest_post', 'time']) for x in range(len(users))]
     count = 0
 
     for user in users:
@@ -381,16 +388,19 @@ def search(request, q=''):
             users_posts[count]['first_name'] = user.first_name
             users_posts[count]['last_name'] = user.last_name
             users_posts[count]['latest_post'] = post.content
-            users_posts[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            users_posts[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
         # if user has no posts
         except Post.DoesNotExist:
             users_posts[count]['username'] = user.username
             users_posts[count]['first_name'] = user.first_name
             users_posts[count]['last_name'] = user.last_name
             if user.first_name == '' and user.last_name == '':
-                users_posts[count]['latest_post'] = user.username + ' has no post'
+                users_posts[count]['latest_post'] = user.username + \
+                    ' has no post'
             else:
-                users_posts[count]['latest_post'] = user.first_name.capitalize() + ' ' + user.last_name.capitalize() + ' has no post'
+                users_posts[count]['latest_post'] = user.first_name.capitalize(
+                ) + ' ' + user.last_name.capitalize() + ' has no post'
             users_posts[count]['time'] = 'N/A'
         count += 1
 
@@ -416,7 +426,8 @@ def get_followers(request, username):
     followers = current_profile.following.all()
 
     # get latest post from each followers
-    users_posts = [dict.fromkeys(['username', 'latest_post', 'time']) for x in range(len(followers))]
+    users_posts = [dict.fromkeys(['username', 'latest_post', 'time'])
+                   for x in range(len(followers))]
     count = 0
 
     for follower in followers:
@@ -427,17 +438,20 @@ def get_followers(request, username):
             users_posts[count]['first_name'] = follower.user.first_name
             users_posts[count]['last_name'] = follower.user.last_name
             users_posts[count]['latest_post'] = post.content
-            users_posts[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            users_posts[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
         # if user has no posts
         except Post.DoesNotExist:
             users_posts[count]['username'] = follower.user.username
             users_posts[count]['first_name'] = follower.user.first_name
             users_posts[count]['last_name'] = follower.user.last_name
             if follower.user.first_name == '' and follower.user.last_name == '':
-                users_posts[count]['latest_post'] = follower.user.username + ' has no post'
+                users_posts[count]['latest_post'] = follower.user.username + \
+                    ' has no post'
             else:
-                users_posts[count]['latest_post'] = follower.user.first_name.capitalize() + ' ' + follower.user.last_name.capitalize() + ' has no post'  
-            
+                users_posts[count]['latest_post'] = follower.user.first_name.capitalize(
+                ) + ' ' + follower.user.last_name.capitalize() + ' has no post'
+
             users_posts[count]['time'] = 'N/A'
         count += 1
 
@@ -458,7 +472,8 @@ def get_following(request, username):
     followings = current_profile_follower.following.all()
 
     # get latest post from each followers
-    users_posts = [dict.fromkeys(['username', 'latest_post', 'time']) for x in range(len(followings))]
+    users_posts = [dict.fromkeys(['username', 'latest_post', 'time'])
+                   for x in range(len(followings))]
     count = 0
 
     for following in followings:
@@ -469,17 +484,20 @@ def get_following(request, username):
             users_posts[count]['first_name'] = following.first_name
             users_posts[count]['last_name'] = following.last_name
             users_posts[count]['latest_post'] = post.content
-            users_posts[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            users_posts[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
         # if user has no posts
         except Post.DoesNotExist:
             users_posts[count]['username'] = following.username
             users_posts[count]['first_name'] = following.first_name
             users_posts[count]['last_name'] = following.last_name
             if following.first_name == '' and following.last_name == '':
-                users_posts[count]['latest_post'] = following.username + ' has no post'
+                users_posts[count]['latest_post'] = following.username + \
+                    ' has no post'
             else:
-                users_posts[count]['latest_post'] = following.first_name.capitalize() + ' ' + following.last_name.capitalize() + ' has no post'  
-            
+                users_posts[count]['latest_post'] = following.first_name.capitalize(
+                ) + ' ' + following.last_name.capitalize() + ' has no post'
+
             users_posts[count]['time'] = 'N/A'
         count += 1
 
@@ -487,12 +505,11 @@ def get_following(request, username):
         "following": users_posts,
     }, status=200)
 
-# get users like 
+# get users like
 def get_users_like(request, post_id):
     # GET method required
     if request.method != "GET":
         return JsonResponse({"error": "GET request required."}, status=400)
-
 
     # get all user who like post
     post = Post.objects.get(id=post_id.split("_")[0])
@@ -510,16 +527,19 @@ def get_users_like(request, post_id):
             users_posts[count]['first_name'] = user.first_name
             users_posts[count]['last_name'] = user.last_name
             users_posts[count]['latest_post'] = post.content
-            users_posts[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            users_posts[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
         # if user has no posts
         except Post.DoesNotExist:
             users_posts[count]['username'] = user.username
             users_posts[count]['first_name'] = user.first_name
             users_posts[count]['last_name'] = user.last_name
             if user.first_name == '' and user.last_name == '':
-                users_posts[count]['latest_post'] = user.username + ' has no post'
+                users_posts[count]['latest_post'] = user.username + \
+                    ' has no post'
             else:
-                users_posts[count]['latest_post'] = user.first_name.capitalize() + ' ' + user.last_name.capitalize() + ' has no post'  
+                users_posts[count]['latest_post'] = user.first_name.capitalize(
+                ) + ' ' + user.last_name.capitalize() + ' has no post'
             users_posts[count]['time'] = 'N/A'
         count += 1
 
@@ -542,14 +562,14 @@ def config(request, username):
             return render(request, "network/config.html", {
                 "message": "Email must not contain space or special character '/'."
             })
-        
+
         # update user details
         user = User.objects.filter(username=request.user.username)
         user.update(first_name=first_name)
         user.update(last_name=last_name)
         user.update(email=email)
 
-        # return 
+        # return
         if request.user.username != username:
             return JsonResponse({"error": "Nice try. Your own info is now modified and this action is will be punished."}, status=400)
         else:
@@ -571,7 +591,7 @@ def config(request, username):
                 'email': request.user.email
             })
 
-    # else return 
+    # else return
     else:
         return JsonResponse({"error": "GET or POST request required."}, status=400)
 
@@ -579,9 +599,11 @@ def config(request, username):
 def infinite_scroll(request, pathname, page_count):
     # get posts from homepage
     if pathname == 'home':
-        posts = Post.objects.all().order_by('-time')[page_count: page_count + 5]
+        posts = Post.objects.all().order_by(
+            '-time')[page_count: page_count + 5]
 
-        latest_post = [dict.fromkeys(['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like']) for x in range(len(posts))]
+        latest_post = [dict.fromkeys(
+            ['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like']) for x in range(len(posts))]
         count = 0
         for post in posts:
             latest_post[count]['user'] = post.user.username
@@ -589,7 +611,8 @@ def infinite_scroll(request, pathname, page_count):
             latest_post[count]['last_name'] = post.user.last_name
             latest_post[count]['id'] = post.id
             latest_post[count]['content'] = post.content
-            latest_post[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            latest_post[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
             latest_post[count]['like'] = post.user_like.count()
 
             count += 1
@@ -602,9 +625,11 @@ def infinite_scroll(request, pathname, page_count):
     # get posts from following lists
     elif pathname == 'following':
         following_list = Follower.objects.get(user=request.user)
-        posts = Post.objects.filter(user__in=following_list.following.all()).order_by("-time")[page_count: page_count + 5]
+        posts = Post.objects.filter(user__in=following_list.following.all()).order_by(
+            "-time")[page_count: page_count + 5]
 
-        latest_post = [dict.fromkeys(['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like']) for x in range(len(posts))]
+        latest_post = [dict.fromkeys(
+            ['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like']) for x in range(len(posts))]
         count = 0
         for post in posts:
             latest_post[count]['user'] = post.user.username
@@ -612,7 +637,8 @@ def infinite_scroll(request, pathname, page_count):
             latest_post[count]['last_name'] = post.user.last_name
             latest_post[count]['id'] = post.id
             latest_post[count]['content'] = post.content
-            latest_post[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            latest_post[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
             latest_post[count]['like'] = post.user_like.count()
 
             count += 1
@@ -626,9 +652,11 @@ def infinite_scroll(request, pathname, page_count):
     else:
         # get posts from profile
         current_profile = User.objects.get(username=pathname)
-        posts = Post.objects.filter(user=current_profile).order_by("-time")[page_count: page_count + 5]
+        posts = Post.objects.filter(user=current_profile).order_by(
+            "-time")[page_count: page_count + 5]
 
-        latest_post = [dict.fromkeys(['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like']) for x in range(len(posts))]
+        latest_post = [dict.fromkeys(
+            ['username', 'first_name', 'last_name', 'id', 'content', 'time', 'like']) for x in range(len(posts))]
         count = 0
         for post in posts:
             latest_post[count]['user'] = post.user.username
@@ -636,7 +664,8 @@ def infinite_scroll(request, pathname, page_count):
             latest_post[count]['last_name'] = post.user.last_name
             latest_post[count]['id'] = post.id
             latest_post[count]['content'] = post.content
-            latest_post[count]['time'] = utc_to_local(post.time).strftime("%b %d %Y, %I:%M:%S %p")
+            latest_post[count]['time'] = utc_to_local(
+                post.time).strftime("%b %d %Y, %I:%M:%S %p")
             latest_post[count]['like'] = post.user_like.count()
 
             count += 1
