@@ -3,4 +3,3 @@ Django
 whitenoise
 tzdata
 tzlocal
-sqlite3
