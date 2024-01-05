@@ -3,3 +3,4 @@ Django
 whitenoise
 tzdata
 tzlocal
+libsqlite3
