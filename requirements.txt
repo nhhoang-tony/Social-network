@@ -3,4 +3,4 @@ Django
 whitenoise
 tzdata
 tzlocal
-_sqlite3
+sqlite3
