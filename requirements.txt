@@ -3,4 +3,4 @@ Django
 whitenoise
 tzdata
 tzlocal
-psycopg2
+psycopg2-binary
