@@ -8,7 +8,7 @@
     {
       "src": "build_files.sh",
       "use": "@vercel/static-build",
-      "config": { "distDir": "network/static" }
+      "config": { "distDir": "STATICFILES_DIRS" }
     }
   ],
   "routes": [
@@ -20,6 +20,5 @@
       "src": "network/static/(.*)",
       "dest": "network/static/$1"
     }
-  ],
-  "outputDirectory": "network/static"
+  ]
 }
