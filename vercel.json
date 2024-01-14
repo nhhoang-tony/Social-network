@@ -20,5 +20,6 @@
       "src": "network/static/(.*)",
       "dest": "network/static/$1"
     }
-  ]
+  ],
+  "outputDirectory": "STATICFILES_DIRS"
 }
