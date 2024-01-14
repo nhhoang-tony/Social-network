@@ -1,6 +1,6 @@
 # <a href="https://socialnetwork.tonynguyen61.com" target="_blank" rel="noopener noreferrer">Live demo</a>
 
-# A social network site
+# A free social networking site where you can share your ideas, receive latest news updates, and follow your favorite people
 
 ## To run the social network locally
 
