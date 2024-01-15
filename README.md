@@ -6,10 +6,10 @@
 
 1. Clone the repo `git clone https://github.com/nhhoang-tony/cs50w_socialnetwork.git`  
 
-2. Ensure you have Python installed on your system  
+2. Ensure you have Docker installed on your system. If not, follow this guide here to install `https://docs.docker.com/engine/install/`
 
-3. Run `pip install -r requirements.txt` to install the project dependencies.
+3. Download the docker image `docker pull tonynguyen61/cs50w_network:latest`
 
-4. Run `echo $TZ > /etc/timezone` and `ln -snf /usr/share/zoneinfo/$TZ /etc/localtime` to set up timezone
+4. Run Docker image locally `docker run -it -p 8080:8080 tonynguyen61/cs50w_network:latest`
 
-4. Run `python manage.py runserver` to start the game  
+5. This is just a local social network only. Changes made here won't be reflected in the web version.
