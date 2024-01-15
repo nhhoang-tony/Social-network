@@ -359,7 +359,7 @@ def search(request, q=''):
 
     # trim search query
     names = query.split()
-    displaySearchQuery = ' '.join(names)
+    displaySearchQuery = query.replace('%20', ' ')
 
     # founded users holder
     users = []
