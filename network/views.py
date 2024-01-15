@@ -61,7 +61,7 @@ def register(request):
         email = request.POST["email"]
         if " " in username or "/" in username:
             return render(request, "network/register.html", {
-                "message": "Username must not contain space or special character '/'."
+                "message": "Username must not contain space or special character / or empty space"
             })
         if username == 'following' or username == 'home':
             return render(request, "network/register.html", {
@@ -357,22 +357,29 @@ def search(request, q=''):
     space = User.objects.annotate(search_name=Concat(
         'first_name', Value(' '), 'last_name'))
 
-    # search for user based on username and combined first_name + last_name
-    username = User.objects.filter(username__icontains=query).all()
-    first_last = no_space.filter(search_name__icontains=query).all()
-    first_last_space = space.filter(search_name__icontains=query).all()
+    # trim search query
+    names = query.split()
+    print(names)
 
-    # add all distinct users
+    # founded users holder
     users = []
-    for i in username:
-        if i not in users:
-            users.append(i)
-    for i in first_last:
-        if i not in users:
-            users.append(i)
-    for i in first_last_space:
-        if i not in users:
-            users.append(i)
+
+    for name in names:
+        # search for user based on username and combined first_name + last_name
+        username = User.objects.filter(username__icontains=name).all()
+        first_last = no_space.filter(search_name__icontains=name).all()
+        first_last_space = space.filter(search_name__icontains=name).all()
+
+        for i in username:
+            if i not in users:
+                users.append(i)
+        for i in first_last:
+            if i not in users:
+                users.append(i)
+        for i in first_last_space:
+            if i not in users:
+                users.append(i)
+
 
     # get latest post from each user
     users_posts = [dict.fromkeys(

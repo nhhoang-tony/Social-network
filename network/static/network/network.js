@@ -652,6 +652,8 @@ end_of_page = false;
 window.onload = () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
     if (end_of_page == false) {
+      document.querySelector('.please_wait').style.display = 'block';
+
       if (window.location.pathname == '/') {
         get_next_post('home');
       } else if (window.location.pathname == '/following_post') {
