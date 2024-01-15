@@ -4,3 +4,4 @@ whitenoise
 tzdata
 tzlocal
 psycopg2-binary
+python-dotenv
