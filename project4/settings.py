@@ -135,7 +135,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'network/static'),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, 'network/static')  # specify static root
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'network/static')  # specify static root
 
 # auto log user out
 # opional, as this will log you out when browser is closed
