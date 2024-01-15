@@ -351,6 +351,7 @@ def delete_post(request, post_id):
 def search(request, q=''):
     # get search value
     query = q
+    displaySearchQuery = query.replace('%20', ' ')
 
     no_space = User.objects.annotate(
         search_name=Concat('first_name', 'last_name'))
@@ -359,8 +360,6 @@ def search(request, q=''):
 
     # trim search query
     names = query.split()
-    displaySearchQuery = query.replace('%20', ' ')
-
     # founded users holder
     users = []
 
@@ -418,7 +417,7 @@ def search(request, q=''):
 
     return render(request, "network/search.html", {
         'users': page_obj,
-        'query': query
+        'displaySearchQuery': displaySearchQuery
     })
 
 
