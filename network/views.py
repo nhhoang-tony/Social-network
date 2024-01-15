@@ -359,7 +359,7 @@ def search(request, q=''):
 
     # trim search query
     names = query.split()
-    print(names)
+    displaySearchQuery = ' '.join(names)
 
     # founded users holder
     users = []

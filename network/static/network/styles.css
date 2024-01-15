@@ -195,20 +195,20 @@ a:active {
 }
 
 h1 {
-  margin-left: 5%;
-  margin-top: 3%;
+  margin-left: 50px;
+  margin-top: 50px;
 }
 
 h2 {
-  margin-left: 5%;
-  margin-top: 3%;
+  margin-left: 50px;
+  margin-top: 50px;
 }
 
 .message {
   font-size: 18px;
   margin-top: 1%;
   margin-bottom: 1%;
-  margin-left: 5%;
+  margin-left: 50;
 }
 
 /* The Modal (background) */

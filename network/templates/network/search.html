@@ -3,7 +3,7 @@
 {% block body %}
 {% load static %}
 
-    <h1>Search results based on your keyword <span style="font-style:italic">"{{query}}"</span></h1>
+    <h1>Search results based on your keyword <span style="font-style:italic">"{{displaySearchQuery}}"</span></h1>
 
     <div id="all_posts">
         {% if users.object_list %}
@@ -38,7 +38,7 @@
             {% endfor %}
         {% else %}
                 <div class="post_form">
-                    <h5>There is no people with the name <span style="font-style:italic">"{{query}}"</span></h5>
+                    <h5>There is no people with the name <span style="font-style:italic">"{{displaySearchQuery}}"</span></h5>
                 </div>
         {% endif %}
     </div>
