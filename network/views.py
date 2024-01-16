@@ -11,7 +11,6 @@ from django.db.models import Value
 from django.db.models.functions import Concat
 from datetime import datetime, timezone
 import pytz
-
 from .models import User, Post, Comment, Follower
 
 # get all post on homepage
