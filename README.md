@@ -1,6 +1,6 @@
 # <a href="https://socialnetwork.tonynguyen61.com" target="_blank" rel="noopener noreferrer">View</a>
 
-# A free social networking site where you can share your ideas, receive latest news updates, and follow your favorite people
+# A social networking site where you can share your ideas, receive latest news updates, and follow your favorite people
 
 ## To run the social network locally
 
