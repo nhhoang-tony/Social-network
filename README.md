@@ -14,7 +14,7 @@
 
 5. Run `python manage.py runserver` to start the social network and start connecting with people.
 
-# Afternatively, run the social network locally via Docker
+## Afternatively, run the social network locally via Docker
 
 1. Ensure you have Docker installed on your system. If not, follow this guide here to install `https://docs.docker.com/engine/install/`
 
