@@ -366,15 +366,15 @@ def search(request, q=''):
         first_last = no_space.filter(search_name__icontains=name).all()
         first_last_space = space.filter(search_name__icontains=name).all()
 
-    for i in username:
-        if i not in users:
+        for i in username:
+            if i not in users:
             users.append(i)
-    for i in first_last:
-        if i not in users:
-            users.append(i)
-    for i in first_last_space:
-        if i not in users:
-            users.append(i)
+        for i in first_last:
+            if i not in users:
+                users.append(i)
+        for i in first_last_space:
+            if i not in users:
+                users.append(i)
 
 
     # get latest post from each user
