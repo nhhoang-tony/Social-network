@@ -359,27 +359,19 @@ def search(request, q=''):
 
     # founded users holder
     users = []
-    names = query.split(' ')
-    for name in names:
-        # search for user based on username and combined first_name + last_name
-        username = User.objects.filter(username__icontains=name).all()
-        first_last = no_space.filter(search_name__icontains=name).all()
-        first_last_space = space.filter(search_name__icontains=name).all()
+    username = User.objects.filter(username__icontains=query).all()
+    first_last = no_space.filter(search_name__icontains=query).all()
+    first_last_space = space.filter(search_name__icontains=query).all()
 
-        print('find username ', username)
-        print('find first_last', first_last)
-        print('find last space ', first_last_space)
-
-        for i in username:
-            if i not in users:
-                users.append(i)
-        for i in first_last:
-            if i not in users:
-                users.append(i)
-        for i in first_last_space:
-            if i not in users:
-                users.append(i)
-
+    for i in username:
+        if i not in users:
+            users.append(i)
+    for i in first_last:
+        if i not in users:
+            users.append(i)
+    for i in first_last_space:
+        if i not in users:
+            users.append(i)
 
     # get latest post from each user
     users_posts = [dict.fromkeys(
