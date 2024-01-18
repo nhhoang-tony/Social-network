@@ -375,6 +375,10 @@ function like_count(post_id) {
     });
 }
 
+let postContent = {
+  id: -1,
+  content: '',
+};
 // API call to edit post
 function edit_post(edit) {
   // remove listener
@@ -385,6 +389,10 @@ function edit_post(edit) {
   let current_content = document.getElementById(
     `${post_id.split('_')[0]}_content`
   );
+  if (postContent.id === -1) {
+    postContent.id = post_id;
+    postContent.content = current_content.innerHTML;
+  }
 
   // change post content to text area
   form = document.createElement('form');
@@ -392,10 +400,10 @@ function edit_post(edit) {
   textarea = document.createElement('textarea');
   textarea.setAttribute('class', 'form-control');
   textarea.setAttribute('id', 'new_content');
-  textarea.setAttribute('placeholder', current_content.innerHTML);
+  textarea.setAttribute('placeholder', postContent.content);
   textarea.setAttribute('required', `""`);
   textarea.focus();
-  textarea.innerHTML = current_content.innerHTML;
+  textarea.innerHTML = postContent.content;
   input = document.createElement('input');
   input.setAttribute('type', 'submit');
   input.setAttribute('class', 'submit_button');
@@ -434,6 +442,9 @@ function change_post(post_id) {
       console.log(result);
       change_post_view(post_id);
     });
+
+  postContent.id = -1;
+  postContent.content = '';
 }
 
 // API call to get post content without reloading page
