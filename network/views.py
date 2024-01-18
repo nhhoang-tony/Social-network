@@ -368,7 +368,7 @@ def search(request, q=''):
 
         for i in username:
             if i not in users:
-            users.append(i)
+                users.append(i)
         for i in first_last:
             if i not in users:
                 users.append(i)
