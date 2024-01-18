@@ -362,9 +362,9 @@ def search(request, q=''):
     names = query.split(' ')
     for name in names:
         # search for user based on username and combined first_name + last_name
-        username = User.objects.filter(username__icontains=query).all()
-        first_last = no_space.filter(search_name__icontains=query).all()
-        first_last_space = space.filter(search_name__icontains=query).all()
+        username = User.objects.filter(username__icontains=name).all()
+        first_last = no_space.filter(search_name__icontains=name).all()
+        first_last_space = space.filter(search_name__icontains=name).all()
 
     for i in username:
         if i not in users:
