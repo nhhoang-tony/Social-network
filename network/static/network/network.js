@@ -591,7 +591,7 @@ function generate_follow_list(users, string) {
       username = document.createElement('div');
       username.setAttribute('class', 'post_username');
       username_link = document.createElement('a');
-      username_link.setAttribute('href', `${users[i].username}`);
+      username_link.setAttribute('href', `profile/${users[i].username}`);
       if (users[i].first_name == '' && users[i].last_name == '') {
         username_link.innerHTML =
           users[i].username.charAt(0).toUpperCase() +
