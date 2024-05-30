@@ -1,5 +1,6 @@
 django-rest-framework==0.1.0
 Django
+pytz
 whitenoise
 tzdata
 tzlocal
